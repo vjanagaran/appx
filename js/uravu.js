@@ -18,6 +18,7 @@ function onDeviceReady() {
     }
     localDb.init();
     openFB.init({appId: config.fbAppId});
+    app.receivedEvent('deviceready');
     initPushwoosh();
 }
 
