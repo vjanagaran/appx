@@ -134,8 +134,16 @@
         <div data-role="page" data-theme='b' id="nearby">
             <div data-role="header" data-tap-toggle="false"  data-position="fixed" data-theme='b'>
                 <input autocomplete="off" class="transph" id="query" data-theme="b" type="search" name="query" data-label="Enter your text" />
-                <a href="#sort" class="ui-btn ui-shadow ui-btn-b ui-corner-all ui-btn-right ui-icon-carat-d ui-btn-icon-notext">Sort by</a>
                 <a href="#filter" class="ui-btn ui-shadow ui-btn-b ui-corner-all ui-btn-left ui-icon-gear ui-btn-icon-notext">Tags</a>
+                <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="ui-btn ui-shadow ui-btn-b ui-corner-all ui-btn-right ui-icon-carat-d ui-btn-icon-notext">Actions...</a>
+                <div data-role="popup" id="popupMenu" data-theme="b">
+                    <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                        <li data-role="list-divider" class="trans" data-label="Sort"></li>
+                        <li><a href="#" class="trans" id="byname" data-label="by Name"></a></li>
+                        <li><a href="#" class="trans" id="bydis" data-label="by Distance"></a></li>
+                        <li><a href="#" class="trans" onclick="sbyTag();" data-label="by Tag Matching">Tags</a></li>
+                    </ul>
+                </div>
             </div>
             <div data-role="content">
                 <div id="users"></div>
@@ -249,20 +257,6 @@
                 </script>
             </div>
         </div> <!-- filter users -->
-
-        <div data-role="page" data-theme='c' id="sort">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
-                <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Sort"></h1>
-            </div>
-            <div data-role="content">
-                <ul data-role="listview" data-inset="true" data-theme='b'>
-                    <li><input type="button" class="transv" data-label="by Name" onclick="sbyName();" /></li>
-                    <li><input type="button" class="transv" data-label="by Distance" onclick="sbyDistance();" /></li>
-                    <li><input type="button" class="transv" data-label="by Tag Matching" onclick="sbyTag();" /></li>
-                </ul>
-            </div>
-        </div> <!-- sort users -->
 
         <div data-role="page" data-theme='a' id="chat">
             <div data-role="header" data-tap-toggle="false" data-theme='a'>

@@ -178,11 +178,25 @@ $.addTemplateFormatter({
     },
     userTags: function (value, options) {
         var tags = value.split(",");
+        var filter = getFilterConfig();
+        var rs = $.parseJSON(filter);
+        var selected = rs.tags.split(",");
         var out = "";
+        var out1 = "";
+        var out2 = "";
         $.each(tags, function (index, tag) {
             tag = $.trim(tag);
-            out = out + "<li>" + tag + "</li>";
+            $.each(selected, function (ind, sel) {
+                sel = $.trim(sel);
+                if (sel == tag) {
+                    out1 = out1 + '<li class="tags_selected">' + tag + '</li>';
+                } else {
+                    out2 = out2 + '<li>' + tag + '</li>';
+                }
+            });
         });
+        out = out1 + out2;
+        //console.log(out);
         return out;
     },
     distanceFormat: function (value, options) {
@@ -195,6 +209,7 @@ $.addTemplateFormatter({
         }
     }
 });
+
 function updateLocation(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
@@ -617,6 +632,7 @@ function nearby(qry) {
         localDb.getUsers(qry);
     }
     dotrans();
+    setSort();
     return false;
 }
 
@@ -868,9 +884,9 @@ function showFilter() {
     var chkbx = rs.flag;
     $("#slider").slider("value", rs.distance);
     $('#filter_tags').importTags(rs.tags);
-    if(chkbx == 0){
+    if (chkbx == 0) {
         $("#flag").prop('checked', false);
-    }else{
+    } else {
         $("#flag").prop('checked', true);
     }
 }

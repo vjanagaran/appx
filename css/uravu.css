@@ -1036,6 +1036,10 @@ progress[data-theme=b]::-moz-progress-value {
     width: 100%; 
 }
 
+.tags_selected{
+    background: #EC746F!important;
+}
+
 @media all and (min-width: 481px) and (max-width: 800px) {
 
 }

@@ -28,11 +28,25 @@ var user_config_default = {
     distance: 10,
     tags: "",
     sortby: "distance"
-}
+};
 
 function getFilterConfig() {
     var conf = window.localStorage.getItem(config.filter_config);
     return conf;
+}
+
+var sortuser = "";
+function setSort() {
+    $('#byname').click(function () {
+        sortuser = 'name';
+        setFilterConfig();
+        localDb.getUsers("");
+    });
+    $('#bydis').click(function () {
+        sortuser = 'distance';
+        setFilterConfig();
+        localDb.getUsers("");
+    });
 }
 
 function setFilterConfig() {
@@ -45,9 +59,9 @@ function setFilterConfig() {
     var filter = {
         distance: distance,
         tags: tags,
-        flag: flag
-    }
+        flag: flag,
+        sortby: sortuser
+    };
     filter = JSON.stringify(filter);
-    alert(filter);
     window.localStorage.setItem(config.filter_config, filter);
 }

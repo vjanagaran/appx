@@ -113,7 +113,6 @@ localDb.getProfile = function () {
                 render,
                 localDb.onError);
     });
-
     var render = function (tx, rs) {
         var user = rs.rows.item(0);
         console.log(user);
@@ -129,7 +128,6 @@ localDb.getUserById = function (id) {
                 render,
                 localDb.onError);
     });
-
     var render = function (tx, rs) {
         var user = rs.rows.item(0);
         console.log(user);
@@ -194,19 +192,30 @@ localDb.getBlockedUsers = function () {
 localDb.getUsers = function (qry) {
     var db = localDb.db;
     var user = getVal(config.user_id);
+    var sort = "";
     var filter = getFilterConfig();
+    var rs = $.parseJSON(filter);
     var qry_build = "";
     if (qry !== "") {
         qry_build = " and name like '%" + qry + "%' ";
     }
+    if (rs.sortby == "") {
+        rs.sortby = 'distance';
+        sort = 'ORDER BY u.distance';
+    } else if (rs.sortby == "distance") {
+        sort = 'ORDER BY u.distance';
+    } else if (rs.sortby == "name") {
+        sort = 'ORDER BY u.name';
+    }
     db.transaction(function (tx) {
-        tx.executeSql("SELECT u.id, u.name, u.email, u.tags, u.image, u.distance, count(m.id) as unread FROM user as u left join message as m on u.user = m.user and u.email = m.sender and m.status = 0 where u.user = ?  GROUP BY u.email ORDER BY u.distance ASC", [user],
+        tx.executeSql("SELECT u.id, u.name, u.email, u.tags, u.image, u.distance, count(m.id) as unread FROM user as u left join message as m on u.user = m.user and u.email = m.sender and m.status = 0 where u.user = ? GROUP BY u.email " + sort + " ASC", [user],
                 render,
                 localDb.onError);
     });
 
     var render = function (tx, rs) {
         var users = [];
+        alert(rs.rows.length);
         for (var i = 0; i < rs.rows.length; i++) {
             users.push(rs.rows.item(i));
         }
@@ -217,7 +226,6 @@ localDb.getUsers = function (qry) {
         console.log('Rendering users....');
     };
 };
-
 
 /** Chat message functions *************************************************************/
 localDb.addMessage = function (msg) {
