@@ -18,7 +18,7 @@ function onDeviceReady() {
     }
     localDb.init();
     openFB.init({appId: config.fbAppId});
-    //initPushwoosh();
+    initPushwoosh();
 }
 
 var router = new $.mobile.Router([{
