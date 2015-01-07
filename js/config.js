@@ -32,6 +32,9 @@ var user_config_default = {
 
 function getFilterConfig() {
     var conf = window.localStorage.getItem(config.filter_config);
+    if(conf == null) {
+        return JSON.stringify(user_config_default);
+    }
     return conf;
 }
 
@@ -54,7 +57,6 @@ function setFilterConfig() {
     var distance = $("#slider").slider("value");
     var tags = $('#filter_tags').val();
     var sort = $('#sortBy').val();
-    alert(sort);
     if (sort == "" || sort == null) {
         sort = "distance";
     }
