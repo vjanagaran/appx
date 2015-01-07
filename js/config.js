@@ -35,24 +35,29 @@ function getFilterConfig() {
     return conf;
 }
 
-var sortuser = "";
-function setSort() {
-    $('#byname').click(function () {
-        sortuser = 'name';
-        setFilterConfig();
-        localDb.getUsers("");
-    });
-    $('#bydis').click(function () {
-        sortuser = 'distance';
-        setFilterConfig();
-        localDb.getUsers("");
-    });
+function setSortByName() {
+    $("#sortBy").val("name");
+    setFilterConfig();
+    localDb.getUsers();
+    $("#popupMenu").popup("close");
+}
+
+function setSortByDistance() {
+    $("#sortBy").val("distance");
+    setFilterConfig();
+    localDb.getUsers();
+    $("#popupMenu").popup("close");
 }
 
 function setFilterConfig() {
     var flag = 0;
     var distance = $("#slider").slider("value");
     var tags = $('#filter_tags').val();
+    var sort = $('#sortBy').val();
+    if (sort == "") {
+        sort = "distance";
+    }
+
     if ($("#flag").prop('checked') == true) {
         flag = 1;
     }
@@ -60,8 +65,13 @@ function setFilterConfig() {
         distance: distance,
         tags: tags,
         flag: flag,
-        sortby: sortuser
+        sortby: sort
     };
     filter = JSON.stringify(filter);
     window.localStorage.setItem(config.filter_config, filter);
+}
+
+function setFilter() {
+    setFilterConfig();
+    $(":mobile-pagecontainer").pagecontainer("change", "#nearby");
 }

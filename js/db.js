@@ -192,30 +192,24 @@ localDb.getBlockedUsers = function () {
 localDb.getUsers = function (qry) {
     var db = localDb.db;
     var user = getVal(config.user_id);
-    var sort = "";
+    var sort_by = "u.distance ASC";
     var filter = getFilterConfig();
     var rs = $.parseJSON(filter);
     var qry_build = "";
     if (qry !== "") {
         qry_build = " and name like '%" + qry + "%' ";
     }
-    if (rs.sortby == "") {
-        rs.sortby = 'distance';
-        sort = 'ORDER BY u.distance';
-    } else if (rs.sortby == "distance") {
-        sort = 'ORDER BY u.distance';
-    } else if (rs.sortby == "name") {
-        sort = 'ORDER BY u.name';
+    if (rs.sortby === "name") {
+        sort_by = 'u.name ASC';
     }
     db.transaction(function (tx) {
-        tx.executeSql("SELECT u.id, u.name, u.email, u.tags, u.image, u.distance, count(m.id) as unread FROM user as u left join message as m on u.user = m.user and u.email = m.sender and m.status = 0 where u.user = ? GROUP BY u.email " + sort + " ASC", [user],
+        tx.executeSql("SELECT u.id, u.name, u.email, u.tags, u.image, u.distance, count(m.id) as unread FROM user as u left join message as m on u.user = m.user and u.email = m.sender and m.status = 0 where u.user = ? GROUP BY u.email ORDER BY " + sort_by, [user],
                 render,
                 localDb.onError);
     });
 
     var render = function (tx, rs) {
         var users = [];
-        alert(rs.rows.length);
         for (var i = 0; i < rs.rows.length; i++) {
             users.push(rs.rows.item(i));
         }
@@ -298,7 +292,9 @@ localDb.updateMenu = function () {
     db.transaction(function (tx) {
         tx.executeSql("SELECT count(sender) as unread FROM message where user = ? and status = 0 and unread > 0 GROUP BY sender ORDER BY created_at ASC", [user],
                 render,
-                localDb.onError);
+                function () {
+                    alert('error occurs');
+                });
     });
 
     var render = function (tx, rs) {

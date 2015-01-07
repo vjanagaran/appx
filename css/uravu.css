@@ -808,6 +808,14 @@ progress[data-theme=b]::-moz-progress-value {
     color: #EC746F;
 }
 
+.newmsg_popup{
+    position: fixed!important;
+    top: 10px!important;
+    left: 30px!important;
+    z-index: 100;
+    margin-top: 100px;
+}
+
 .user h3 a.btn_chat sup {
     margin-left: -10px;
     color: #EC746F;

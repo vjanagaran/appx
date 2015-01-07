@@ -40,7 +40,7 @@
             <div data-role="content">
                 <h1><img src="./images/logo-large.png" alt="Uravu" /></h1>
             </div>
-            <div data-role="footer" data-position="fixed" data-theme='b'>
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <fieldset class="ui-grid-a">
                     <div class="ui-block-a"><a role="button" href="#login" class="trans ui-btn ui-btn-b ui-btn-corner-all" data-transition="slidedown" data-label="Login"></a></div>
                     <div class="ui-block-b"><a role="button" href="#register" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="slidedown" data-label="New User"></a></div>
@@ -52,7 +52,7 @@
         </div> <!-- /home -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="register">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="User Registration"></h1>
             </div>
@@ -82,7 +82,7 @@
         </div> <!-- /register -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="login">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="User Login"></h1>
             </div>
@@ -102,7 +102,7 @@
         </div> <!-- /login -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="forgotpass">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Forgot Password"></h1>
             </div>
@@ -116,7 +116,7 @@
         </div> <!-- forgot password -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="reg_avatar">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a href="#nearby" data-role="button" class="ui-btn ui-btn-e">Skip</a>
                 <h1 class="trans" data-label="Profile Image"></h1>
             </div>
@@ -139,16 +139,16 @@
                 <div data-role="popup" id="popupMenu" data-theme="b">
                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
                         <li data-role="list-divider" class="trans" data-label="Sort"></li>
-                        <li><a href="#" class="trans" id="byname" data-label="by Name"></a></li>
-                        <li><a href="#" class="trans" id="bydis" data-label="by Distance"></a></li>
-                        <li><a href="#" class="trans" onclick="sbyTag();" data-label="by Tag Matching">Tags</a></li>
+                        <li><a href="#" class="trans" onclick="return setSortByName();" data-label="by Name"></a></li>
+                        <li><a href="#" class="trans" onclick="return setSortByDistance();" data-label="by Distance"></a></li>
                     </ul>
+                    <input type="hidden" id="sortBy" value="distance"/>
                 </div>
             </div>
             <div data-role="content">
                 <div id="users"></div>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#nearby" data-icon="location" class="trans ui-btn-active" data-label="Near by"></a></li>
@@ -181,13 +181,13 @@
         </div> <!-- nearby -->
 
         <div data-role="page" data-theme='b' id="favorite">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <h1 class="trans" data-label="Favorite Users"></h1>
             </div>
             <div data-role="content">
                 <div id="favusers"></div>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#nearby" data-icon="location" class="trans" data-label="Near by"></a></li>
@@ -219,7 +219,7 @@
         </div> <!-- favorite -->
 
         <div data-role="page" data-theme='c' id="filter">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Filter"></h1>
             </div>
@@ -229,18 +229,9 @@
                 <div class="layout-slider">
                     <input id="slider" type="slider" name="distance" value="0" />
                 </div>
-                <a class="ui-btn ui-corner-all ui-btn-b trans" data-label="Filter" onclick="setFilterConfig();"></a>
+                <a class="ui-btn ui-corner-all ui-btn-b trans" data-label="Filter" onclick="setFilter();"></a>
                 <script type="text/javascript">
-                    var curr = getVal(config.language);
-                    var km = '';
-                    $.ajax({
-                        url: 'local/' + curr + '.json',
-                        dataType: 'json',
-                        async: false,
-                        success: function (rs) {
-                            km = rs.km;
-                        }
-                    });
+                    var km = _t('km');
                     $('#filter_tags').tagsInput();
                     jQuery("#slider").slider({
                         from: 0,
@@ -259,14 +250,14 @@
         </div> <!-- filter users -->
 
         <div data-role="page" data-theme='a' id="chat">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1><img src="images/logo-icon.png" alt="Uravu"/></h1>
             </div>
             <div data-role="content">
                 <div id="messages"></div>
             </div>
-            <div data-role="footer" data-position="fixed">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <form id="chat-input" data-ajax="false">
                     <textarea data-theme="a" class="msg transph" name="msg" id="msg" data-label="Enter your message..."></textarea>
                     <input type="submit" class="transv ui-btn ui-btn-right ui-btn-inline" data-label="send"/>
@@ -295,7 +286,7 @@
                         to: to
                     });
 
-                    chatMessage("user1", getVal(config.user_name), msg);
+                    chat.dispMessage("user1", getVal(config.user_name), msg);
                     var msg_id = Math.floor(Math.random() * 10000000);
                     var data = {id: msg_id, from: getVal(config.user_email), to: to, msg_en: msg, msg_tm: "here is tamil", status: 1};
                     localDb.addMessage(data);
@@ -307,7 +298,7 @@
         </div> <!-- chat -->
 
         <div data-role="page" data-theme='a' id="user">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="User Details"></h1>
             </div>
@@ -347,7 +338,7 @@
         </div> <!-- individual user -->
 
         <div data-role="page" data-theme='c' id="me">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Me"></h1>
             </div>
@@ -362,7 +353,7 @@
         </div> <!-- me -->
 
         <div data-role="page" data-theme='a' id="profile">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Profile"></h1>
             </div>
@@ -407,7 +398,7 @@
         </div> <!-- /setting -->
 
         <div data-role="page" data-theme='b' id="block">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Blocked Users"></h1>
             </div>
@@ -435,7 +426,7 @@
         </div> <!-- block -->
 
         <div data-role="page" data-theme='a' data-close-btn="none" id="language">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Select Language"></h1>
             </div>
@@ -451,7 +442,7 @@
         </div>    <!-- /language -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="avatar">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Profile Image"></h1>
             </div>
@@ -467,7 +458,7 @@
         </div> <!-- change image -->
 
         <div data-role="page" data-theme='b' data-close-btn="none" id="change_password">
-            <div data-role="header" data-tap-toggle="false" data-theme='d'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="Change Password"></h1>
             </div>
@@ -482,7 +473,7 @@
         </div> <!-- change password -->
 
         <div data-role="page" data-theme='c' id="more">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="More"></h1>
             </div>
@@ -496,7 +487,7 @@
         </div> <!-- more -->
 
         <div data-role="page" data-theme='c' id="about">
-            <div data-role="header" data-tap-toggle="false" data-theme='a'>
+            <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
                 <h1 class="trans" data-label="About Uravu"></h1>
             </div>

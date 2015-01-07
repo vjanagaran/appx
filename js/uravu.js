@@ -18,8 +18,9 @@ function onDeviceReady() {
     }
     localDb.init();
     openFB.init({appId: config.fbAppId});
-    app.receivedEvent('deviceready');
-    initPushwoosh();
+    if(is_mobile) {
+        push.initPushwoosh();
+    }
 }
 
 var router = new $.mobile.Router([{
@@ -53,6 +54,7 @@ var router = new $.mobile.Router([{
     },
     loginPage: function (type, match, ui) {
         log('Login Page', 3);
+        $('#regavatar_msg').empty();
         dotrans();
     },
     forgotpassPage: function (type, match, ui) {
@@ -122,6 +124,7 @@ var router = new $.mobile.Router([{
     },
     avatarPage: function (type, match, ui) {
         log('Avatar Page', 3);
+        $("#done_msg").empty();
         dotrans();
     },
     changepassPage: function (type, match, ui) {
@@ -186,15 +189,20 @@ $.addTemplateFormatter({
         var out1 = "";
         var out2 = "";
         $.each(tags, function (index, tag) {
-            tag = $.trim(tag);
+            var tag_match = false;
+            tag = $.trim(tag).toLowerCase();
             $.each(selected, function (ind, sel) {
-                sel = $.trim(sel);
+                sel = $.trim(sel).toLowerCase();
                 if (sel == tag) {
-                    out1 = out1 + '<li class="tags_selected">' + tag + '</li>';
-                } else {
-                    out2 = out2 + '<li>' + tag + '</li>';
+                    tag_match = true;
+                    return false;
                 }
             });
+            if (tag_match) {
+                out1 = out1 + '<li class="tags_selected">' + tag + '</li>';
+            } else {
+                out2 = out2 + '<li>' + tag + '</li>';
+            }
         });
         out = out1 + out2;
         //console.log(out);
@@ -304,12 +312,12 @@ function emaillogin() {
     var email = $("#lemail").val();
     var pass = $("#lpassword").val();
     if (!validateEmail(email)) {
-        alert("Please enter valid email");
+        alert(_t("Please enter valid email"));
         $("#lemail").focus();
         return false;
     }
     if (pass.length < 1) {
-        alert("Please enter password");
+        alert(_t("Please enter password"));
         $("#lpassword").focus();
         return false;
     }
@@ -345,6 +353,7 @@ function refreshforgotpass() {
 }
 
 function refreshchangepass() {
+    dotrans();
     $("#errChangepass").empty();
 }
 
@@ -385,6 +394,7 @@ function showSort() {
 }
 
 function refreshRegister() {
+    $("#errReg").empty();
     $('#reg_name').val('');
     $('#reg_mobile').val('');
     $('#reg_about').val('');
@@ -393,13 +403,15 @@ function refreshRegister() {
 }
 
 function saveRegister() {
+    $("#errReg").empty();
     if (validateRegistrer()) {
         var name = $("#reg_name").val(),
                 email = $("#reg_email").val(),
                 password = $("#reg_password").val(),
                 about = $("#reg_about").val(),
                 mobile = $("#reg_mobile").val(),
-                tags = $("#reg_tags").val();
+                tags = $("#reg_tags").val(),
+                err = "";
         var data = {name: name, email: email, password: password, about: about, mobile: mobile, tags: tags};
         var api = new $.RestClient();
         api.add('reg', {url: 'register'});
@@ -407,13 +419,18 @@ function saveRegister() {
         reg.done(function (rs) {
             if (rs.error === false) {
                 setVal(config.user_id, rs.id);
-                setVal(config.user_email, email);
+                setVal(config.user_email, rs.email);
+                setVal(config.user_name, rs.name);
                 setVal(config.user_session, rs.apiKey);
+                setVal(config.user_image, rs.image);
+                chat.signin();
+                localDb.syncUsers("");
                 $("#errReg").empty();
                 $(":mobile-pagecontainer").pagecontainer("change", "#reg_avatar");
             } else {
                 log('User alredy exist', 3);
-                $("#errReg").html(rs.message);
+                err = _t(rs.message);
+                $("#errReg").html(err);
             }
         });
     }
@@ -422,7 +439,8 @@ function saveRegister() {
 
 function forgotpass() {
     $("#errForgotpass").empty();
-    var email = $('#femail').val();
+    var email = $('#femail').val(),
+            err = "";
     if (validateEmail(email)) {
         var data = {email: email};
         var api = new $.RestClient();
@@ -430,7 +448,11 @@ function forgotpass() {
         var reset = api.reset.create(data);
         reset.done(function (rs) {
             if (rs.error === false) {
-                $("#errForgotpass").html(rs.message);
+                err = _t(rs.message);
+                $("#errForgotpass").html(err);
+            } else {
+                err = _t(rs.message);
+                $("#errForgotpass").html(err);
             }
         });
     }
@@ -439,7 +461,8 @@ function forgotpass() {
 
 function changepass() {
     $("#errChangepass").empty();
-    var pas = $('#npass').val();
+    var pas = $('#npass').val(),
+            err = "";
     if (validPassword()) {
         var api = new $.RestClient();
         var data = {password: pas};
@@ -447,7 +470,8 @@ function changepass() {
         var changepass = api.changepass.create(data);
         changepass.done(function (rs) {
             if (rs.error === false) {
-                $("#errChangepass").html(rs.message);
+                err = _t(rs.message);
+                $("#errChangepass").html(err);
             }
         });
     }
@@ -456,11 +480,11 @@ function changepass() {
 
 function validPassword() {
     if ($.trim($("#npass").val()).length < 6) {
-        alert("Password must be 6 char");
+        alert(_t("Password must be 6 char"));
         return false;
     }
     if ($.trim($("#re_npass").val()) !== $.trim($("#npass").val())) {
-        alert("Re-entered password missmatched!");
+        alert(_t("Re-entered password missmatched!"));
         return false;
     }
     return true;
@@ -468,23 +492,23 @@ function validPassword() {
 
 function validateRegistrer() {
     if ($.trim($("#reg_name").val()).length < 3) {
-        alert("Name must be 3 char");
+        alert(_t("Name must be 3 char"));
         return false;
     }
     if (!validateEmail(jQuery("#reg_email").val())) {
-        alert("Please enter valid email");
+        alert(_t("Please enter valid email"));
         return false;
     }
     if ($.trim($("#reg_password").val()).length < 6) {
-        alert("Password must be 6 char");
+        alert(_t("Password must be 6 char"));
         return false;
     }
     if ($.trim($("#reg_password").val()) !== $.trim($("#reg_repassword").val())) {
-        alert("Re-entered password missmatched!");
+        alert(_t("Re-entered password missmatched!"));
         return false;
     }
     if ($.trim($("#reg_about").val()).length < 15) {
-        alert("Tell about you at least with 15 char");
+        alert(_t("Tell about you at least with 15 char"));
         return false;
     }
     return true;
@@ -519,7 +543,8 @@ function saveProfile() {
         var name = $("#pro-name").val();
         var mobile = $("#pro-mobile").val();
         var about = $("#pro-about").val();
-        var tags = $("#pro-tags").val();
+        var tags = $("#pro-tags").val(),
+                err = "";
         var api = new $.RestClient();
         var data = {name: name, about: about, mobile: mobile, tags: tags};
         api.add('update', {url: 'user/' + getVal(config.user_id), apiKey: getVal(config.user_session)});
@@ -527,8 +552,9 @@ function saveProfile() {
         update.done(function (rs) {
             if (rs.error === false) {
                 log('Profile updated', 2);
+                err = _t(rs.message);
                 showProfile();
-                $("#update_msg").html(rs.message);
+                $("#update_msg").html(err);
             }
         });
     }
@@ -572,9 +598,10 @@ function saveRegAvatar(frm) {
     var img = $("#reg-avatar-image").val();
     $('#regavatar_msg').empty();
     if (img !== '') {
-        $("#regavatar_msg").append('please wait...');
+        $("#regavatar_msg").append(_t('please wait...'));
         var data = new FormData(frm);
-        var uid = getVal(config.user_id);
+        var uid = getVal(config.user_id),
+                err = "";
         var api = new $.RestClient();
         api.add('avatar', {url: 'avatar/' + uid, apiKey: getVal(config.user_session), multipart: true});
         var avatar = api.avatar.create(data);
@@ -584,7 +611,8 @@ function saveRegAvatar(frm) {
                 $(":mobile-pagecontainer").pagecontainer("change", "#nearby");
             } else {
                 $('#regavatar_msg').empty();
-                $('#regavatar_msg').append(rs.message);
+                err = _t(rs.message);
+                $('#regavatar_msg').append(err);
             }
         });
     }
@@ -595,9 +623,10 @@ function uploadAvatar(frm) {
     var img = $("#avatar-image").val();
     $("#done_msg").empty();
     if (img !== '') {
-        $("#done_msg").append('please wait...');
+        $("#done_msg").append(_t('please wait...'));
         var data = new FormData(frm);
-        var uid = getVal(config.user_id);
+        var uid = getVal(config.user_id),
+                err = "";
         var api = new $.RestClient();
         api.add('avatar', {url: 'avatar/' + uid, apiKey: getVal(config.user_session), multipart: true});
         var avatar = api.avatar.create(data);
@@ -605,10 +634,12 @@ function uploadAvatar(frm) {
             if (rs.error == false) {
                 console.log('done');
                 $("#done_msg").empty();
-                $('#done_msg').append(rs.message);
+                err = _t(rs.message);
+                $('#done_msg').append(err);
             } else {
                 $("#done_msg").empty();
-                $("#done_msg").append(rs.message);
+                err = _t(rs.message);
+                $("#done_msg").append(err);
             }
         });
     }
@@ -617,11 +648,11 @@ function uploadAvatar(frm) {
 
 function validateProfile() {
     if ($.trim($("#pro-name").val()).length < 3) {
-        alert("Name must be 3 char");
+        alert(_t("Name must be 3 char"));
         return false;
     }
     if ($.trim($("#pro-about").val()).length < 15) {
-        alert("Tell about you at least with 15 char");
+        alert(_t("Tell about you at least with 15 char"));
         return false;
     }
     return true;
@@ -633,7 +664,6 @@ function nearby(qry) {
         localDb.getUsers(qry);
     }
     dotrans();
-    setSort();
     return false;
 }
 
