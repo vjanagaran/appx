@@ -190,6 +190,7 @@ localDb.getBlockedUsers = function () {
 };
 
 localDb.getUsers = function (qry) {
+    log("getting users.....", 3);
     var db = localDb.db;
     var user = getVal(config.user_id);
     var sort_by = "u.distance ASC";
@@ -211,6 +212,7 @@ localDb.getUsers = function (qry) {
 
     var render = function (tx, rs) {
         var users = [];
+        log("Users count : " + rs.rows.length, 3);
         for (var i = 0; i < rs.rows.length; i++) {
             users.push(rs.rows.item(i));
         }
