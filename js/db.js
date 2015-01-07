@@ -195,11 +195,12 @@ localDb.getUsers = function (qry) {
     var sort_by = "u.distance ASC";
     var filter = getFilterConfig();
     var rs = $.parseJSON(filter);
+    console.log(rs);
     var qry_build = "";
     if (qry !== "") {
         qry_build = " and name like '%" + qry + "%' ";
     }
-    if (rs.sortby === "name") {
+    if (typeof(rs.sortby) != null && rs.sortby === "name") {
         sort_by = 'u.name ASC';
     }
     db.transaction(function (tx) {

@@ -54,7 +54,8 @@ function setFilterConfig() {
     var distance = $("#slider").slider("value");
     var tags = $('#filter_tags').val();
     var sort = $('#sortBy').val();
-    if (sort == "") {
+    alert(sort);
+    if (sort == "" || sort == null) {
         sort = "distance";
     }
 
