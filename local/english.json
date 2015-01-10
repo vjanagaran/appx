@@ -59,6 +59,8 @@
     "Select": "Select",
     "New Password": "New Password",
     "Re-enter New Password": "Re-enter New Password",
+    "Login failed. Incorrect credentials": "Login failed. Incorrect credentials",
+    "Oops! An error occurred while updating": "Oops! An error occurred while updating",
     "How it works": "How it works",
     "Sorry, this email already existed": "Sorry, this email already existed",
     "Your given mail id was not registered": "Your given mail id was not registered",

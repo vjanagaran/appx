@@ -198,7 +198,10 @@ $.addTemplateFormatter({
                     return false;
                 }
             });
-            if (tag_match) {
+            if (tag == "") {
+                out1 = "";
+                out2 = "";
+            } else if (tag_match && tag !== "") {
                 out1 = out1 + '<li class="tags_selected">' + tag + '</li>';
             } else {
                 out2 = out2 + '<li>' + tag + '</li>';
@@ -326,6 +329,7 @@ function emaillogin() {
 }
 
 function login(email, pass) {
+    var err = "";
     var api = new $.RestClient();
     api.add('user', {url: 'login'});
     var user = api.user.create({email: email, password: pass});
@@ -336,13 +340,17 @@ function login(email, pass) {
             setVal(config.user_name, rs.name);
             setVal(config.user_session, rs.apiKey);
             setVal(config.user_image, rs.image);
+            setVal(config.user_mobile, rs.mobile);
+            setVal(config.user_tags, rs.tags);
+            setVal(config.user_about, rs.about);
             chat.signin();
             localDb.syncUsers("");
             $("#errLogin").empty();
             $(":mobile-pagecontainer").pagecontainer("change", "#nearby");
         } else {
             log('Login error', 3);
-            $("#errLogin").html(rs.message);
+            err = _t(rs.message);
+            $("#errLogin").append(err);
         }
     });
 }
@@ -423,6 +431,9 @@ function saveRegister() {
                 setVal(config.user_name, rs.name);
                 setVal(config.user_session, rs.apiKey);
                 setVal(config.user_image, rs.image);
+                setVal(config.user_mobile, rs.mobile);
+                setVal(config.user_tags, rs.tags);
+                setVal(config.user_about, rs.about);
                 chat.signin();
                 localDb.syncUsers("");
                 $("#errReg").empty();
@@ -522,18 +533,11 @@ function validateEmail(email) {
 function showProfile() {
     $("#update_msg").empty();
     if (getVal(config.user_session)) {
-        var uid = getVal(config.user_id);
-        var api = new $.RestClient();
-        var email = getVal(config.user_email);
-        api.add('user', {url: 'user/' + uid, apiKey: getVal(config.user_session)});
-        var user = api.user.read();
-        user.done(function (rs) {
-            $("#pro-name").val(rs.user.name);
-            $("#pro-email").val(rs.user.email);
-            $("#pro-mobile").val(rs.user.mobile);
-            $("#pro-about").val(rs.user.about);
-            $("#pro-tags").importTags(rs.user.tags);
-        });
+        $("#pro-name").val(getVal(config.user_name));
+        $("#pro-email").val(getVal(config.user_email));
+        $("#pro-mobile").val(getVal(config.user_mobile));
+        $("#pro-about").val(getVal(config.user_about));
+        $("#pro-tags").importTags(getVal(config.user_tags));
     }
 }
 
@@ -553,7 +557,14 @@ function saveProfile() {
             if (rs.error === false) {
                 log('Profile updated', 2);
                 err = _t(rs.message);
+                $("#update_msg").html(err);
+                setVal(config.user_name, name);
+                setVal(config.user_mobile, mobile);
+                setVal(config.user_tags, tags);
+                setVal(config.user_about, about);
                 showProfile();
+            } else {
+                err = _t(rs.message);
                 $("#update_msg").html(err);
             }
         });

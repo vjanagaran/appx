@@ -72,6 +72,8 @@
 	"New Password": "புதிய கடவுச்சொல்",
     "Re-enter New Password": "மீண்டும்-புதிய கடவுச்சொல்",
 	"Please enter password": "கடவுச்சொல்லை உள்ளிடவும்",
+	"Login failed. Incorrect credentials": "தவறான சான்றுகள். உள்நுழைவு தோல்வி",
+	"Oops! An error occurred while updating": "விவரம் மாற்றப்படவில்லை மீண்டும் முயற்சிக்கவும்",
     "Select Language": "மொழி தேர்வு",
     "How it works": "இதன் வேலைபாடு",
     "Uravu Messenger is a cross-platform mobile messaging app": "உறவு தூதர் ஒரு குறுக்கு மேடையில் மொபைல் செய்திகளை அனுப்பும் பயன்பாட்டுத்தளம் ஆகும்",

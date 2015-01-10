@@ -34,6 +34,7 @@
         <script type="text/javascript" src="js/jquery.dependClass-0.1.js"></script>
         <script type="text/javascript" src="js/draggable-0.1.js"></script>
         <script type="text/javascript" src="js/jquery.slider.js"></script>
+        <script type="text/javascript" src="js/uuid.js"></script>
     </head>
     <body>
         <div data-role="page" data-theme="a" class="welcome" id="home">
@@ -240,7 +241,7 @@
                         limits: false,
                         round: 1,
                         heterogeneity: ['50/100', '75/1000'],
-                        format: {format: '##.0', locale: 'de'},
+                        format: {format: '##.0', locate: 'de'},
                         scale: [0, 50, 100, 1000, 10000],
                         dimension: '&nbsp;' + km,
                         skin: "round"
@@ -258,7 +259,7 @@
                 <div id="messages"></div>
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                <form id="chat-input" data-ajax="false">
+                <form id="chat-input" data-ajax="false" onsubmit="return chat.send();">
                     <textarea data-theme="a" class="msg transph" name="msg" id="msg" data-label="Enter your message..."></textarea>
                     <input type="submit" class="transv ui-btn ui-btn-right ui-btn-inline" data-label="send"/>
                     <input type="hidden" id="to" value=""/>
@@ -270,29 +271,27 @@
                         var btn = "btn_" + mail2id(getVal(config.user_email));
                         $("#" + btn).removeClass('newmsg');
                     }
-
                 });
+
                 $("#chat").on("pageshow", function () {
                     $('#messages').animate({
                         scrollTop: $('#messages').prop("scrollHeight")}, 100);
                 });
-                $('#chat-input').submit(function (e) {
-                    e.preventDefault();
-                    var to = $('#to').val();
-                    var msg = $('#msg').val();
-                    socket.emit('chat message', {
-                        message: msg,
-                        from: getVal(config.user_email),
-                        to: to
-                    });
 
-                    chat.dispMessage("user1", getVal(config.user_name), msg);
-                    var msg_id = Math.floor(Math.random() * 10000000);
-                    var data = {id: msg_id, from: getVal(config.user_email), to: to, msg_en: msg, msg_tm: "here is tamil", status: 1};
-                    localDb.addMessage(data);
-                    $('#msg').val('');
-                    $('#msg').focus();
-                    return false;
+                $("#msg").focusin(function () {
+                    var to = $("#to").val();
+                    socket.emit('chat_message_typing', {
+                                                from: getVal(config.user_email),
+                                                to: to
+                                        });
+                });
+
+                $("#msg").focusout(function () {
+                    var to = $("#to").val();
+                    socket.emit('chat_message_typing_stop', {
+                                                from: getVal(config.user_email),
+                                                to: to
+                                        });
                 });
             </script>
         </div> <!-- chat -->

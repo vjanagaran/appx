@@ -33,7 +33,7 @@ localDb.createTable = function () {
         //tx.executeSql('DROP TABLE message');
         //tx.executeSql('DROP TABLE user');
         tx.executeSql('CREATE TABLE IF NOT EXISTS message (' +
-                'ID INTEGER NOT NULL PRIMARY KEY,' +
+                'ID VARCHAR(40) NOT NULL PRIMARY KEY,' +
                 'user INTEGER NOT NULL,' +
                 'sender VARCHAR(200) NOT NULL,' +
                 'receiver VARCHAR(200) NOT NULL,' +
@@ -232,6 +232,17 @@ localDb.addMessage = function (msg) {
         var createdAt = new Date();
         tx.executeSql("INSERT INTO message (ID, user, sender, receiver, msg_en, msg_tm, status, created_at) VALUES (?,?,?,?,?,?,?,?)",
                 [msg.id, user, msg.from, msg.to, msg.msg_en, msg.msg_tm, msg.status, createdAt],
+                localDb.onSuccess,
+                localDb.onError);
+    });
+};
+
+localDb.changeMessageStatus = function (msg) {
+    var db = localDb.db;
+    
+    db.transaction(function (tx) {
+        tx.executeSql("UPDATE message set `status` = ? where ID = ?",
+                [msg.status, msg.id],
                 localDb.onSuccess,
                 localDb.onError);
     });
