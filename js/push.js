@@ -26,7 +26,7 @@ function registerPushwooshAndroid() {
                 //pushNotification.stopGeoPushes();
             });
 
-    push.pushNotification.onDeviceReady({projectid: "1098796262059", appid: "DA80A-458BB"});
+    push.pushNotification.onDeviceReady({projectid: "1098796262059", appid: "CD674-C9167"});
 
     push.pushNotification.registerDevice(
             function (token) {
@@ -104,7 +104,7 @@ function registerPushwooshIOS() {
             });
 
     //initialize the plugin
-    push.pushNotification.onDeviceReady({pw_appid: "DA80A-458BB"});
+    push.pushNotification.onDeviceReady({pw_appid: "CD674-C9167"});
 
     //register for pushes
     push.pushNotification.registerDevice(
