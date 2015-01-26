@@ -34,14 +34,19 @@ chat.message = function (msg) {
         $(".newmsg_popup").fadeOut(10000);
         $("#" + from_btn + " i").addClass('newmsg');
         //localDb.updateMenu();
-        status = 0;
+        status = 3;
     } else {
         chat.dispMessage("user2", from_email, msg.message);
+        status = 3;
     }
 
     var msg_id = msg.id;
     var data = {id: msg_id, from: from_email, to: getVal(config.user_email), msg_en: msg.message, msg_tm: "here is tamil", status: status};
     localDb.addMessage(data);
+    
+    // send new status to server
+    
+    
 };
 
 chat.signin = function () {
@@ -57,6 +62,10 @@ chat.send = function (e) {
     var data = {id: msg_id, from: getVal(config.user_email), to: to, msg_en: msg, msg_tm: "", status: 1};
     localDb.addMessage(data);
 
+    chat.dispMessage("user1", getVal(config.user_name), msg);
+    $('#msg').val('');
+    $('#msg').focus();
+
     socket.emit('chat message', {
         id: msg_id,
         message: msg,
@@ -65,9 +74,6 @@ chat.send = function (e) {
         status: 1
     });
 
-    chat.dispMessage("user1", getVal(config.user_name), msg);
-    $('#msg').val('');
-    $('#msg').focus();
     return false;
 };
 

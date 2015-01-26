@@ -201,7 +201,7 @@ localDb.getUsers = function (qry) {
     if (qry !== "") {
         qry_build = " and name like '%" + qry + "%' ";
     }
-    if (typeof(rs.sortby) != null && rs.sortby === "name") {
+    if (typeof (rs.sortby) != null && rs.sortby === "name") {
         sort_by = 'u.name ASC';
     }
     db.transaction(function (tx) {
@@ -239,37 +239,43 @@ localDb.addMessage = function (msg) {
 
 localDb.changeMessageStatus = function (msg) {
     var db = localDb.db;
-    
+    console.log(msg);
     db.transaction(function (tx) {
         tx.executeSql("UPDATE message set `status` = ? where ID = ?",
                 [msg.status, msg.id],
                 localDb.onSuccess,
                 localDb.onError);
     });
+    
+    // update status
+    
 };
 
 localDb.getMessages = function (sender) {
-    var renderMessages = function (row) {
-        var cls = "user1";
-        if (sender == row.sender) {
-            cls = "user2";
-        }
-        var now = new Date(row.created_at),
-                hh = now.getHours(),
-                mm = now.getMinutes(),
-                timeMark = hh + ':' + mm;
-
-        var content = '<div class=" ' + cls + '"><div class="txtmsg">' + nl2br(row.msg_en) + '<span>' + timeMark + '</span></div></div>';
-        return content;
-    };
     var render = function (tx, rs) {
         var rowOutput = "";
         var messages = document.getElementById("messages");
         for (var i = 0; i < rs.rows.length; i++) {
-            rowOutput += renderMessages(rs.rows.item(i));
+
+            var row = rs.rows.item(i);
+            var cls = "user1";
+            if (sender == row.sender) {
+                cls = "user2";
+            }
+            var now = new Date(row.created_at),
+                    hh = now.getHours(),
+                    mm = now.getMinutes(),
+                    timeMark = hh + ':' + mm;
+            
+            if(row.status == 3) {
+                // change status = 4 in local db
+                // send this update to server
+                
+            }
+            
+            rowOutput += '<div id="' + row.id + '" class=" ' + cls + '"><div class="txtmsg">' + nl2br(row.msg_en) + '<span><span class="status_' + row.status + '"></span>' + timeMark + '</span></div></div>';
         }
         messages.innerHTML = rowOutput;
-        localDb.clearUnread(sender);
     };
     var db = localDb.db;
     var user = getVal(config.user_id);
