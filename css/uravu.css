@@ -247,7 +247,6 @@ img.ajax-loading {
 
 .ui-page.welcome {
     background : transparent url("./../images/welcome.jpg");
-    background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
