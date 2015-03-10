@@ -37,7 +37,7 @@ chat.message = function (msg) {
         status = 3;
     } else {
         chat.dispMessage("user2", from_email, msg.message);
-        status = 3;
+        status = 4;
     }
 
     var msg_id = msg.id;

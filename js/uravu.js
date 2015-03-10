@@ -18,7 +18,7 @@ function onDeviceReady() {
     }
     localDb.init();
     openFB.init({appId: config.fbAppId});
-    if(is_mobile) {
+    if (is_mobile) {
         push.initPushwoosh();
     }
 }
@@ -279,36 +279,35 @@ function home() {
 }
 
 function fblogin() {
-    openFB.login(
-            function (response) {
-                if (response.status === 'connected') {
-                    log('Facebook login succeeded, got access token: ' + response.authResponse.token, 3);
-                    openFB.api({
-                        path: '/me',
-                        success: function (data) {
-                            log('FB Login with ' + data.email, 3);
-                            var api = new $.RestClient();
-                            var val = {email: data.email, name: data.name, fb_auth: data.id, about: data.bio};
-                            api.add('fb', {url: 'fblogin'});
-                            var fb = api.fb.create(val);
-                            fb.done(function (rs) {
-                                if (rs.error === false) {
-                                    setVal(config.user_id, rs.id);
-                                    setVal(config.user_email, rs.email);
-                                    setVal(config.user_session, rs.apiKey);
-                                    chat.signin();
-                                    localDb.syncUsers("");
-                                    $(":mobile-pagecontainer").pagecontainer("change", "#nearby");
-                                } else {
-                                    alert(rs.message);
-                                }
-                            })
-                        },
-                        error: errorHandler});
-                } else {
-                    log('Facebook login failed: ' + response.error, 1);
-                }
-            }, {scope: 'email,read_stream,publish_stream'});
+    openFB.login(function (response) {
+        if (response.status === 'connected') {
+            log('Facebook login succeeded, got access token: ' + response.authResponse.token, 3);
+            openFB.api({
+                path: '/me',
+                success: function (data) {
+                    log('FB Login with ' + data.email, 3);
+                    var api = new $.RestClient();
+                    var val = {email: data.email, name: data.name, fb_auth: data.id, about: data.bio};
+                    api.add('fb', {url: 'fblogin'});
+                    var fb = api.fb.create(val);
+                    fb.done(function (rs) {
+                        if (rs.error === false) {
+                            setVal(config.user_id, rs.id);
+                            setVal(config.user_email, rs.email);
+                            setVal(config.user_session, rs.apiKey);
+                            chat.signin();
+                            localDb.syncUsers("");
+                            $(":mobile-pagecontainer").pagecontainer("change", "#nearby");
+                        } else {
+                            alert(rs.message);
+                        }
+                    });
+                },
+                error: errorHandler});
+        } else {
+            log('Facebook login failed: ' + response.error, 1);
+        }
+    }, {scope: 'email,read_stream,publish_stream'});
 }
 
 function emaillogin() {
@@ -403,10 +402,10 @@ function showSort() {
 
 function refreshRegister() {
     $("#errReg").empty();
-    $('#reg_name').val('');
-    $('#reg_mobile').val('');
-    $('#reg_about').val('');
-    $('#reg_tags').val('');
+    $('#reg_name').val("");
+    $('#reg_mobile').val("");
+    $('#reg_about').val("");
+    $('#reg_tags').val("");
     dotrans();
 }
 
@@ -427,13 +426,13 @@ function saveRegister() {
         reg.done(function (rs) {
             if (rs.error === false) {
                 setVal(config.user_id, rs.id);
-                setVal(config.user_email, rs.email);
-                setVal(config.user_name, rs.name);
+                setVal(config.user_email, email);
+                setVal(config.user_name, name);
                 setVal(config.user_session, rs.apiKey);
                 setVal(config.user_image, rs.image);
-                setVal(config.user_mobile, rs.mobile);
-                setVal(config.user_tags, rs.tags);
-                setVal(config.user_about, rs.about);
+                setVal(config.user_mobile, mobile);
+                setVal(config.user_tags, tags);
+                setVal(config.user_about, about);
                 chat.signin();
                 localDb.syncUsers("");
                 $("#errReg").empty();

@@ -9,6 +9,9 @@ push.initPushwoosh = function () {
     if (device.platform == "iPhone" || device.platform == "iOS") {
         registerPushwooshIOS();
     }
+    if (device.platform == "WinCE" || device.platform == "Win32NT") {
+        registerPushwooshWindows();
+    }
 }
 
 function registerPushwooshAndroid() {
@@ -149,4 +152,45 @@ function onPushwooshiOSInitialized(pushToken) {
     );
     //start geo tracking.
     //pushNotification.startLocationTracking();
+}
+
+function registerPushwooshWindows() {
+    push.pushNotification = window.plugins.pushNotification;
+    //set push notifications handler
+    document.addEventListener('push-notification', function (event) {
+        //get the notification payload
+        var notification = event.notification.content.replace(/[+\s]/g, ' ');
+        $("#externalpopup_text").html(notification);
+        $("#externalpopup").popup("open");
+        //display alert to the user for example
+        //alert(JSON.stringify(notification));
+    });
+
+    //initialize the plugin
+    push.pushNotification.onDeviceReady({appid: PWAppID, serviceName: ""});
+
+    //register for pushes
+    push.pushNotification.registerDevice(
+            function (status) {
+                var pushToken = status;
+                console.warn('push token: ' + pushToken);
+                setVal(config.device_token, pushToken);
+                onPushwooshWindowsInitialized();
+            },
+            function (status) {
+                console.warn(JSON.stringify(['failed to register ', status]));
+            }
+    );
+}
+
+function onPushwooshWindowsInitialized() {
+    //retrieve the tags for the device
+    push.pushNotification.setTags({tagName: "tagValue", intTagName: 10},
+    function (status) {
+        console.warn('tags for the device: ' + JSON.stringify(status));
+        //alert('setTags success: ' + JSON.stringify(status));
+    },
+            function (status) {
+                console.warn('setTags failed');
+            });
 }
