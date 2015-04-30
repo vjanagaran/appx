@@ -314,12 +314,12 @@ function emaillogin() {
     var email = $("#lemail").val();
     var pass = $("#lpassword").val();
     if (!validateEmail(email)) {
-        alert(_t("Please enter valid email"));
+        alert(_t("ENTER_VALID_EMAIL"));
         $("#lemail").focus();
         return false;
     }
     if (pass.length < 1) {
-        alert(_t("Please enter password"));
+        alert(_t("PLEASE_ENTER_PASSWORD"));
         $("#lpassword").focus();
         return false;
     }
@@ -490,11 +490,11 @@ function changepass() {
 
 function validPassword() {
     if ($.trim($("#npass").val()).length < 6) {
-        alert(_t("Password must be 6 char"));
+        alert(_t("PASSWORD_6_CHAR"));
         return false;
     }
     if ($.trim($("#re_npass").val()) !== $.trim($("#npass").val())) {
-        alert(_t("Re-entered password missmatched!"));
+        alert(_t("RE-ENTERED_PASSWORD_MISSMATCHED"));
         return false;
     }
     return true;
@@ -502,23 +502,23 @@ function validPassword() {
 
 function validateRegistrer() {
     if ($.trim($("#reg_name").val()).length < 3) {
-        alert(_t("Name must be 3 char"));
+        alert(_t("NAME_3_CHAR"));
         return false;
     }
     if (!validateEmail(jQuery("#reg_email").val())) {
-        alert(_t("Please enter valid email"));
+        alert(_t("ENTER_VALID_EMAIL"));
         return false;
     }
     if ($.trim($("#reg_password").val()).length < 6) {
-        alert(_t("Password must be 6 char"));
+        alert(_t("PASSWORD_6_CHAR"));
         return false;
     }
     if ($.trim($("#reg_password").val()) !== $.trim($("#reg_repassword").val())) {
-        alert(_t("Re-entered password missmatched!"));
+        alert(_t("RE-ENTERED_PASSWORD_MISMATCHED"));
         return false;
     }
     if ($.trim($("#reg_about").val()).length < 15) {
-        alert(_t("Tell about you at least with 15 char"));
+        alert(_t("TELL_ABOUT_15_CHAR"));
         return false;
     }
     return true;
@@ -608,7 +608,7 @@ function saveRegAvatar(frm) {
     var img = $("#reg-avatar-image").val();
     $('#regavatar_msg').empty();
     if (img !== '') {
-        $("#regavatar_msg").append(_t('please wait...'));
+        $("#regavatar_msg").append(_t('PLEASE_WAIT'));
         var data = new FormData(frm);
         var uid = getVal(config.user_id),
                 err = "";
@@ -633,7 +633,7 @@ function uploadAvatar(frm) {
     var img = $("#avatar-image").val();
     $("#done_msg").empty();
     if (img !== '') {
-        $("#done_msg").append(_t('please wait...'));
+        $("#done_msg").append(_t('PLEASE_WAITE'));
         var data = new FormData(frm);
         var uid = getVal(config.user_id),
                 err = "";
@@ -658,11 +658,11 @@ function uploadAvatar(frm) {
 
 function validateProfile() {
     if ($.trim($("#pro-name").val()).length < 3) {
-        alert(_t("Name must be 3 char"));
+        alert(_t("NAME_3_CHAR"));
         return false;
     }
     if ($.trim($("#pro-about").val()).length < 15) {
-        alert(_t("Tell about you at least with 15 char"));
+        alert(_t("TELL_ABOUT_15_CHAR"));
         return false;
     }
     return true;

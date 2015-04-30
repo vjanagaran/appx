@@ -5,23 +5,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 
-        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-        <link rel="stylesheet" href="css/jquery.mobile.uravu.min.css" />
-        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+        <link rel="stylesheet" href="css/libs/jslider.css" type="text/css">
+        <link rel="stylesheet" href="css/libs/jquery.mobile.uravu.min.css" />
+        <link rel="stylesheet" href="css/libs/jquery.mobile.structure-1.4.5.min.css" />
+        <link rel="stylesheet" href="css/libs/jquery.tagsinput.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/jquery.tagsinput.css">
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/uravu.css" />
-        <link rel="stylesheet" href="css/jslider.css" type="text/css">
 
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="SQLitePlugin.js"></script>
-        <script type="text/javascript" src="js/config.js"></script>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.mobile.router.min.js"></script>
-        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <!-- <script type="text/javascript" src="SQLitePlugin.js"></script>-->
+        <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.mobile.router.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script type="text/javascript" src="js/jquery.loadTemplate-1.4.4.min.js"></script>
-        <script type="text/javascript" src="js/jquery.tagsinput.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.loadTemplate-1.4.4.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.tagsinput.min.js"></script>
+        <script type="text/javascript" src="js/libs/tmpl.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.slider.js"></script>
+        <script type="text/javascript" src="js/libs/uuid.js"></script>
+        <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/openfb.js"></script>
         <script type="text/javascript" src="js/uravu.rest.js"></script>
         <script type="text/javascript" src="js/db.js"></script>
@@ -30,11 +33,9 @@
         <script type="text/javascript" src="js/uravu.js"></script>
         <script type="text/javascript" src="js/jshashtable-2.1_src.js"></script>
         <script type="text/javascript" src="js/jquery.numberformatter-1.2.3.js"></script>
-        <script type="text/javascript" src="js/tmpl.js"></script>
         <script type="text/javascript" src="js/jquery.dependClass-0.1.js"></script>
         <script type="text/javascript" src="js/draggable-0.1.js"></script>
-        <script type="text/javascript" src="js/jquery.slider.js"></script>
-        <script type="text/javascript" src="js/uuid.js"></script>
+
     </head>
     <body>
         <div data-role="page" data-theme="a" class="welcome" id="home">
@@ -43,11 +44,11 @@
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="b">
                 <fieldset class="ui-grid-a">
-                    <div class="ui-block-a"><a role="button" href="#login" class="trans ui-btn ui-btn-b ui-btn-corner-all" data-transition="slidedown" data-label="Login"></a></div>
-                    <div class="ui-block-b"><a role="button" href="#register" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="slidedown" data-label="New User"></a></div>
+                    <div class="ui-block-a"><a role="button" href="#login" class="trans ui-btn ui-btn-b ui-btn-corner-all" data-transition="slidedown" data-label="LOGIN"></a></div>
+                    <div class="ui-block-b"><a role="button" href="#register" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="slidedown" data-label="NEW_USER"></a></div>
                 </fieldset>
                 <fieldset class="ui-grid-solo">
-                    <div class="ui-block-a"><button data-theme="b" class="btn-fblogin" onclick="fblogin();"><i class="fa fa-facebook"></i> <span class="trans" data-label="Facebook Login"></span></button></div>
+                    <div class="ui-block-a"><button data-theme="b" class="btn-fblogin" onclick="fblogin();"><i class="fa fa-facebook"></i> <span class="trans" data-label="FACEBOOK_LOGIN"></span></button></div>
                 </fieldset>
             </div>
         </div> <!-- /home -->
@@ -55,25 +56,25 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="register">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="User Registration"></h1>
+                <h1 class="trans" data-label="USER_REGISTRATION"></h1>
             </div>
             <div data-role="content">
                 <div class="registration">
                     <form id="frmRegister" enctype="multipart/form-data" onsubmit="return saveRegister();">
-                        <input type="text" id="reg_name" name="name" class="transph" value="" maxlength="50" data-label="Your Name"/>
-                        <input type="email" id="reg_email" name="email" value="" class="transph" data-label="Your Email" autocomplete="off" />
-                        <input type="password" id="reg_password" name="password" value="" class="transph" data-label="Enter Password" autocomplete="off" />
-                        <input type="password" id="reg_repassword" value="" class="transph" data-label="Re-enter Password"/>
-                        <input type="tel" id="reg_mobile" name="mobile" value="" class="transph" data-label="Enter Mobile Number"/>
-                        <textarea name="about" id="reg_about" class="transph" data-label="Tell about you...."></textarea>
+                        <input type="text" id="reg_name" name="name" class="transph" value="" maxlength="50" data-label="YOUR_NAME"/>
+                        <input type="email" id="reg_email" name="email" value="" class="transph" data-label="YOUR_EMAIL" autocomplete="off" />
+                        <input type="password" id="reg_password" name="password" value="" class="transph" data-label="ENTER_PASSWORD" autocomplete="off" />
+                        <input type="password" id="reg_repassword" value="" class="transph" data-label="RE-ENTER_PASSWORD"/>
+                        <input type="tel" id="reg_mobile" name="mobile" value="" class="transph" data-label="ENTER_MOBILE_NUMBER"/>
+                        <textarea name="about" id="reg_about" class="transph" data-label="TELL_ABOUT_YOU"></textarea>
                         <input type="text" data-role='none' name="tags" id="reg_tags" class="transph" data-label="Tags each with comma seperated" />
-                        <button type="submit" id="btnRegister" class="trans" data-label="Complete Registration"></button>
+                        <button type="submit" id="btnRegister" class="trans" data-label="COMPLETE_REGISTRATION"></button>
                     </form>
                     <div class="error" id="errReg"></div>
                     <br/><br/>
                     <fieldset class="ui-grid-a">
-                        <div class="ui-block-a align-center"><a role="button" href="#login" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="flip" data-label="Login"></a></div>
-                        <div class="ui-block-b align-center"><button data-theme="b" class="btn-fblogin" onclick="fblogin();"><i class="fa fa-facebook"></i> <span class="trans" data-label="Facebook Login"></span></button></div>
+                        <div class="ui-block-a align-center"><a role="button" href="#login" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="flip" data-label="LOGIN"></a></div>
+                        <div class="ui-block-b align-center"><button data-theme="b" class="btn-fblogin" onclick="fblogin();"><i class="fa fa-facebook"></i> <span class="trans" data-label="FACEBOOK_LOGIN"></span></button></div>
                     </fieldset>
                 </div>
                 <script type="text/javascript">
@@ -85,19 +86,19 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="login">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="User Login"></h1>
+                <h1 class="trans" data-label="USER_LOGIN"></h1>
             </div>
             <div data-role="content">
                 <form id="frmLogin" onsubmit="return emaillogin();">
-                    <input type="email" id="lemail" name="email" value="" class="transph" data-label="Your Email"/>
-                    <input type="password" id="lpassword" name="password" value="" class="transph" data-label="Enter Password"/>
-                    <button type="submit" data-theme="b" class="trans" id="btnLogin" data-label="Login"></button>
+                    <input type="email" id="lemail" name="email" value="" class="transph" data-label="YOUR_EMAIL"/>
+                    <input type="password" id="lpassword" name="password" value="" class="transph" data-label="ENTER_PASSWORD"/>
+                    <button type="submit" data-theme="b" class="trans" id="btnLogin" data-label="LOGIN"></button>
                 </form>
                 <div class="error" id="errLogin"></div>
                 <br/><br/>
                 <fieldset class="ui-grid-a">
-                    <div class="ui-block-a align-center"><a role="button" href="#register" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="flip" data-label="New User"></a></div>
-                    <div class="ui-block-b align-center"><a role="button" href="#forgotpass" class="trans ui-btn ui-btn-a ui-btn-corner-all" data-transition="flip" data-label="Forgot Password"></a></div>
+                    <div class="ui-block-a align-center"><a role="button" href="#register" class="trans ui-btn ui-btn-c ui-btn-corner-all" data-transition="flip" data-label="NEW_USER"></a></div>
+                    <div class="ui-block-b align-center"><a role="button" href="#forgotpass" class="trans ui-btn ui-btn-a ui-btn-corner-all" data-transition="flip" data-label="FORGOT_PASSWORD"></a></div>
                 </fieldset>
             </div>
         </div> <!-- /login -->
@@ -105,12 +106,12 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="forgotpass">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Forgot Password"></h1>
+                <h1 class="trans" data-label="FORGOT_PASSWORD"></h1>
             </div>
             <div data-role="content">
                 <form id="frmForgotpass" onsubmit="return forgotpass();">
-                    <input type="email" id="femail" name="email" value="" class="transph" data-label="Your Email" autofocus/>
-                    <button type="submit" data-theme="b" id="btnForgotpass" class="trans" data-label="Reset Password"></button>
+                    <input type="email" id="femail" name="email" value="" class="transph" data-label="YOUR_EMAIL" autofocus/>
+                    <button type="submit" data-theme="b" id="btnForgotpass" class="trans" data-label="RESET_PASSWORD"></button>
                 </form>
                 <div class="error" id="errForgotpass"></div>
             </div>
@@ -119,13 +120,13 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="reg_avatar">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a href="#nearby" data-role="button" class="ui-btn ui-btn-e">Skip</a>
-                <h1 class="trans" data-label="Profile Image"></h1>
+                <h1 class="trans" data-label="PROFILE_IMAGE"></h1>
             </div>
             <div data-role="content">
                 <div class="avatar">
                     <form id="frmRegAvatar" enctype="multipart/form-data" onsubmit="return saveRegAvatar(this);">
                         <input type="file" name="image" id="reg-avatar-image" />
-                        <button type="submit" id="btnRegAvatar" class="trans" data-label="Save Photo"></button>
+                        <button type="submit" id="btnRegAvatar" class="trans" data-label="SAVE_PHOTO"></button>
                     </form>
                     <div id="regavatar_msg" class="error"></div>
                 </div>
@@ -134,14 +135,14 @@
 
         <div data-role="page" data-theme='b' id="nearby">
             <div data-role="header" data-tap-toggle="false"  data-position="fixed" data-theme='b'>
-                <input autocomplete="off" class="transph" id="query" data-theme="b" type="search" name="query" data-label="Enter your text" />
+                <input autocomplete="off" class="transph" id="query" data-theme="b" type="search" name="query" data-label="ENTER_YOUR_TEXT" />
                 <a href="#filter" class="ui-btn ui-shadow ui-btn-b ui-corner-all ui-btn-left ui-icon-gear ui-btn-icon-notext">Tags</a>
                 <a href="#popupMenu" data-rel="popup" data-transition="slideup" class="ui-btn ui-shadow ui-btn-b ui-corner-all ui-btn-right ui-icon-carat-d ui-btn-icon-notext">Actions...</a>
                 <div data-role="popup" id="popupMenu" data-theme="b">
                     <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                        <li data-role="list-divider" class="trans" data-label="Sort"></li>
-                        <li><a href="#" class="trans" onclick="return setSortByName();" data-label="by Name"></a></li>
-                        <li><a href="#" class="trans" onclick="return setSortByDistance();" data-label="by Distance"></a></li>
+                        <li data-role="list-divider" class="trans" data-label="SORT"></li>
+                        <li><a href="#" class="trans" onclick="return setSortByName();" data-label="BY_NAME"></a></li>
+                        <li><a href="#" class="trans" onclick="return setSortByDistance();" data-label="BY_DISTANCE"></a></li>
                     </ul>
                     <input type="hidden" id="sortBy" value="distance"/>
                 </div>
@@ -152,11 +153,11 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#nearby" data-icon="location" class="trans ui-btn-active" data-label="Near by"></a></li>
-                        <li><a href="#favorite" data-icon="user" class="trans" data-label="Favorite"></a></li>
-                        <li><a href="#chats" data-icon="comment" class="trans menuChats" data-label="Chats"></a></li>
-                        <li><a href="#me" data-icon="calendar" class="trans" data-label="Me"></a></li>
-                        <li><a href="#more" data-icon="bullets" class="trans" data-label="More"></a></li>
+                        <li><a href="#nearby" data-icon="location" class="trans ui-btn-active" data-label="NEAR_BY"></a></li>
+                        <li><a href="#favorite" data-icon="user" class="trans" data-label="FAVORITE"></a></li>
+                        <li><a href="#chats" data-icon="comment" class="trans menuChats" data-label="CHATS"></a></li>
+                        <li><a href="#me" data-icon="calendar" class="trans" data-label="ME"></a></li>
+                        <li><a href="#more" data-icon="bullets" class="trans" data-label="MORE"></a></li>
                     </ul>
                 </div>
             </div>
@@ -183,7 +184,7 @@
 
         <div data-role="page" data-theme='b' id="favorite">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
-                <h1 class="trans" data-label="Favorite Users"></h1>
+                <h1 class="trans" data-label="FAVORITE_USERS"></h1>
             </div>
             <div data-role="content">
                 <div id="favusers"></div>
@@ -191,11 +192,11 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#nearby" data-icon="location" class="trans" data-label="Near by"></a></li>
-                        <li><a href="#favorite" data-icon="user" class="trans ui-btn-active" data-label="Favorite"></a></li>
-                        <li><a href="#chats" data-icon="comment" class="trans menuChats" data-label="Chats"></a></li>
-                        <li><a href="#me" data-icon="calendar" class="trans" data-label="Me"></a></li>
-                        <li><a href="#more" data-icon="bullets" class="trans" data-label="More"></a></li>
+                        <li><a href="#nearby" data-icon="location" class="trans" data-label="NEAR_BY"></a></li>
+                        <li><a href="#favorite" data-icon="user" class="trans ui-btn-active" data-label="FAVORITE"></a></li>
+                        <li><a href="#chats" data-icon="comment" class="trans menuChats" data-label="CHATS"></a></li>
+                        <li><a href="#me" data-icon="calendar" class="trans" data-label="ME"></a></li>
+                        <li><a href="#more" data-icon="bullets" class="trans" data-label="MORE"></a></li>
                     </ul>
                 </div>
             </div>
@@ -222,7 +223,7 @@
         <div data-role="page" data-theme='c' id="filter">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Filter"></h1>
+                <h1 class="trans" data-label="FILTER"></h1>
             </div>
             <div data-role="content">
                 <div id="filter_tags"></div>
@@ -230,9 +231,9 @@
                 <div class="layout-slider">
                     <input id="slider" type="slider" name="distance" value="0" />
                 </div>
-                <a class="ui-btn ui-corner-all ui-btn-b trans" data-label="Filter" onclick="setFilter();"></a>
+                <a class="ui-btn ui-corner-all ui-btn-b trans" data-label="FILTER" onclick="setFilter();"></a>
                 <script type="text/javascript">
-                    var km = _t('km');
+                    var km = _t('KM');
                     $('#filter_tags').tagsInput();
                     jQuery("#slider").slider({
                         from: 0,
@@ -260,8 +261,8 @@
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                 <form id="chat-input" data-ajax="false" onsubmit="return chat.send();">
-                    <textarea data-theme="a" class="msg transph" name="msg" id="msg" data-label="Enter your message..."></textarea>
-                    <input type="submit" class="transv ui-btn ui-btn-right ui-btn-inline" data-label="send"/>
+                    <textarea data-theme="a" class="msg transph" name="msg" id="msg" data-label="ENTER_YOUR_MESSAGE"></textarea>
+                    <input type="submit" class="transv ui-btn ui-btn-right ui-btn-inline" data-label="SEND"/>
                     <input type="hidden" id="to" value=""/>
                 </form>
             </div>
@@ -299,7 +300,7 @@
         <div data-role="page" data-theme='a' id="user">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="User Details"></h1>
+                <h1 class="trans" data-label="USER_DETAILS"></h1>
             </div>
             <div data-role="content">
                 <div id="user-details"></div>
@@ -309,16 +310,16 @@
                 <h3 class="name align-center" data-content="name"></h3>
                 <fieldset class="ui-grid-b">
                     <div class="ui-block-a align-center"><a id="favorite_active" class="ui-btn ui-btn-d ui-btn-corner-all" onclick="return favoriteUser(this);" data-template-bind='[
-                                                            {"attribute": "data-user-id", "value": "id"}]'><i class="fa fa-heart-o"></i> <span class="trans" data-label="Favorite"></span></a></div>
+                                                            {"attribute": "data-user-id", "value": "id"}]'><i class="fa fa-heart-o"></i> <span class="trans" data-label="FAVORITE"></span></a></div>
                     <div class="ui-block-b align-center"><a class="ui-btn ui-btn-d ui-btn-corner-all" data-template-bind='[
-                                                            {"attribute": "href", "value": "email", "formatter": "chatHref"}]'><i class="fa fa-comment"></i> <span class="trans" data-label="Chats"></span></a></div>
+                                                            {"attribute": "href", "value": "email", "formatter": "chatHref"}]'><i class="fa fa-comment"></i> <span class="trans" data-label="CHATS"></span></a></div>
                     <div class="ui-block-c align-center"><a id="block_active" class="ui-btn ui-btn-d ui-btn-corner-all" onclick="return blockUser(this);" data-template-bind='[
-                                                            {"attribute": "data-user-id", "value": "id"}]'><i class="fa fa-ban"></i> <span class="trans" data-label="Block"></span></a></div>
+                                                            {"attribute": "data-user-id", "value": "id"}]'><i class="fa fa-ban"></i> <span class="trans" data-label="BLOCK"></span></a></div>
                 </fieldset>
                 <div id="successmsg" class="error"></div>
                 <div class="ui-corner-all custom-corners">
                     <div class="ui-bar ui-bar-b">
-                        <h3 class="trans" data-label ="My Tags"></h3>
+                        <h3 class="trans" data-label ="MY_TAGS"></h3>
                     </div>
                     <div class="ui-body ui-body-b">
                         <ul class="tags" data-content="tags" data-format="userTags"></ul>
@@ -327,7 +328,7 @@
                 <br/>
                 <div class="ui-corner-all custom-corners">
                     <div class="ui-bar ui-bar-b">
-                        <h3 class="trans" data-label="About Me"></h3>
+                        <h3 class="trans" data-label="ABOUT_ME"></h3>
                     </div>
                     <div class="ui-body ui-body-b">
                         <div data-content="about"></div>
@@ -339,14 +340,14 @@
         <div data-role="page" data-theme='c' id="me">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Me"></h1>
+                <h1 class="trans" data-label="ME"></h1>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true" data-theme='b'>
-                    <li><a href="#profile" class="trans" data-label="My Profile"></a></li>
-                    <li><a href="#setting" class="trans" data-label="Settings"></a></li>
-                    <li><a href="#avatar" class="trans" data-label="Change Image"></a></li>
-                    <li><a href="#change_password" class="trans" data-label="Change Password"></a></li>
+                    <li><a href="#profile" class="trans" data-label="MY_PROFILE"></a></li>
+                    <li><a href="#setting" class="trans" data-label="SETTINGS"></a></li>
+                    <li><a href="#avatar" class="trans" data-label="CHANGE_IMAGE"></a></li>
+                    <li><a href="#change_password" class="trans" data-label="CHANGE_PASSWORD"></a></li>
                 </ul>
             </div>
         </div> <!-- me -->
@@ -354,18 +355,18 @@
         <div data-role="page" data-theme='a' id="profile">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Profile"></h1>
+                <h1 class="trans" data-label="PROFILE"></h1>
             </div>
             <div data-role="content">
                 <div class="content-inner" id="profile-data">
-                    <input type="text" id="pro-name" maxlength="100" class="transph" data-label="First name" />
-                    <input type="email" id="pro-email" readonly="true"/>
-                    <input type="text" id="pro-mobile" maxlength="50" class="transph" data-label="Mobile number" />
-                    <textarea id="pro-about" class="transph" data-label="About You"></textarea>
-                    <input id="pro-tags" maxlength="50" class="transph" data-label="Tags" data-role='none' />
+                    <input type="text" id="pro-name" maxlength="100" class="transph" data-label="FIRST_NAME" />
+                    <input type="email" id="pro-email" readonly/>
+                    <input type="text" id="pro-mobile" maxlength="50" class="transph" data-label="MOBILE_NUMBER" />
+                    <textarea id="pro-about" class="transph" data-label="ABOUT_YOU"></textarea>
+                    <input id="pro-tags" maxlength="50" class="transph" data-label="TAGS" data-role='none' />
                     <fieldset class="ui-grid-a">
-                        <div class="ui-block-a"><a class="ui-btn ui-corner-all ui-btn-b trans" onclick="saveProfile();" data-label="Save" ></a></div>
-                        <div class="ui-block-b"><a class="ui-btn ui-corner-all trans" data-theme="a" onclick="logout();" data-label="Logout"></a></div>
+                        <div class="ui-block-a"><a class="ui-btn ui-corner-all ui-btn-b trans" onclick="saveProfile();" data-label="SAVE" ></a></div>
+                        <div class="ui-block-b"><a class="ui-btn ui-corner-all trans" data-theme="a" onclick="logout();" data-label="LOGOUT"></a></div>
                     </fieldset>
                 </div>
                 <div class="error" id="update_msg"></div>
@@ -378,20 +379,20 @@
         <div data-role="page" data-theme="a" id="setting">
             <div data-role="header" data-tap-toggle="false"  data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Settings"></h1>
+                <h1 class="trans" data-label="SETTINGS"></h1>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true" data-theme='b'>
-                    <li><a href="#" class="trans" data-label="New Message"></a></li>
-                    <li><a href="#" class="trans" data-label="Sound"></a></li>
-                    <li><a href="#" class="trans" data-label="Vibrate"></a></li>
-                    <li><a href="#block" class="trans" data-label="Blocked Users"></a></li>
+                    <li><a href="#" class="trans" data-label="NEW_MESSAGE"></a></li>
+                    <li><a href="#" class="trans" data-label="SOUND"></a></li>
+                    <li><a href="#" class="trans" data-label="VIBRATE"></a></li>
+                    <li><a href="#block" class="trans" data-label="BLOCKED_USERS"></a></li>
                 </ul>
                 <ul data-role="listview" data-inset="true" data-theme='d'>
-                    <li><a href="#language" class="ui-alt-icon"><span class="trans" data-label="Language"></span><span class="currLng"></span></a></li>
-                    <li><a href="#distance" class="trans ui-alt-icon" data-label="Distance"></a></li>
-                    <li><a href="#privacy" class="trans ui-alt-icon" data-label="Privacy"></a></li>
-                    <li><a href="#clear_history" class="trans ui-alt-icon" data-label="Clear Chat History"></a></li>
+                    <li><a href="#language" class="ui-alt-icon"><span class="trans" data-label="LANGUAGE"></span><span class="currLng"></span></a></li>
+                    <li><a href="#distance" class="trans ui-alt-icon" data-label="DISTANCE"></a></li>
+                    <li><a href="#privacy" class="trans ui-alt-icon" data-label="PRIVACY"></a></li>
+                    <li><a href="#clear_history" class="trans ui-alt-icon" data-label="CLEAR_CHAT_HISTORY"></a></li>
                 </ul>
             </div>
         </div> <!-- /setting -->
@@ -399,7 +400,7 @@
         <div data-role="page" data-theme='b' id="block">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Blocked Users"></h1>
+                <h1 class="trans" data-label="BLOCKED_USERS"></h1>
             </div>
             <div data-role="content">
                 <div id="blockusers"></div>
@@ -427,14 +428,14 @@
         <div data-role="page" data-theme='a' data-close-btn="none" id="language">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Select Language"></h1>
+                <h1 class="trans" data-label="SELECT_LANGUAGE"></h1>
             </div>
             <div data-role="content">
                 <form onsubmit="return selectLang(this);">
                     <ul data-role="listview">
                         <li><label><input data-role="none" type="radio" name="lang" id="langen" value="english"><span data-label="english" class="transfix"></span></label></li>
                         <li><label><input data-role="none" type="radio" name="lang" id="langtl" value="tamil"><span data-label="tamil" class="transfix"></span></label></li>
-                        <li><button type="submit" value="Select" class="trans" data-label="Select"></button></li>
+                        <li><button type="submit" value="Select" class="trans" data-label="SELECT"></button></li>
                     </ul>
                 </form>
             </div>
@@ -443,13 +444,13 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="avatar">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Profile Image"></h1>
+                <h1 class="trans" data-label="PROFILE_IMAGE"></h1>
             </div>
             <div data-role="content">
                 <div class="avatar">
                     <form id="frmAvatar" onsubmit="return uploadAvatar(this);" >
                         <input type="file" name="image" id="avatar-image"/>
-                        <button type="submit" id="btnAvatar" class="trans" data-label="Save Photo"></button>
+                        <button type="submit" id="btnAvatar" class="trans" data-label="SAVE_PHOTO"></button>
                     </form>
                     <div id="done_msg" class="error"></div>
                 </div>
@@ -459,13 +460,13 @@
         <div data-role="page" data-theme='b' data-close-btn="none" id="change_password">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='d'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="Change Password"></h1>
+                <h1 class="trans" data-label="CHANGE_PASSWORD"></h1>
             </div>
             <div data-role="content">
                 <form id="frmChangepass" onsubmit="return changepass();">
-                    <input type="password" id="npass" value="" class="transph" data-label="New Password" autocomplete="off" autofocus />
-                    <input type="password" id="re_npass" value="" class="transph" data-label="Re-enter New Password" />
-                    <button type="submit" data-theme="b" id="btnChangepass" class="trans" data-label="Reset Password"></button>
+                    <input type="password" id="npass" value="" class="transph" data-label="NEW_PASSWORD" autocomplete="off" autofocus />
+                    <input type="password" id="re_npass" value="" class="transph" data-label="RE-ENTER_NEW_PASSWORD" />
+                    <button type="submit" data-theme="b" id="btnChangepass" class="trans" data-label="RESET_PASSWORD"></button>
                 </form>
                 <div class="error" id="errChangepass"></div>
             </div>
@@ -474,13 +475,13 @@
         <div data-role="page" data-theme='c' id="more">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="More"></h1>
+                <h1 class="trans" data-label="MORE"></h1>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true" data-theme='d'>
-                    <li><a href="#policy" class="ui-alt-icon trans" data-label="Privacy Policy"></a></li>
-                    <li><a href="#faq" class="ui-alt-icon trans" data-label="FAQs"></a></li>
-                    <li><a href="#about" class="ui-alt-icon trans" data-label="About Uravu"></a></li>
+                    <li><a href="#policy" class="ui-alt-icon trans" data-label="PRIVACY_POLICY"></a></li>
+                    <li><a href="#faq" class="ui-alt-icon trans" data-label="FAQS"></a></li>
+                    <li><a href="#about" class="ui-alt-icon trans" data-label="ABOUT_URAVU"></a></li>
                 </ul>
             </div>
         </div> <!-- more -->
@@ -488,13 +489,13 @@
         <div data-role="page" data-theme='c' id="about">
             <div data-role="header" data-tap-toggle="false" data-position="fixed" data-theme='a'>
                 <a data-rel="back" data-role="button" class="ui-btn ui-btn-b ui-btn-corner-all ui-icon-carat-l ui-btn-icon-notext">Back</a>
-                <h1 class="trans" data-label="About Uravu"></h1>
+                <h1 class="trans" data-label="ABOUT_URAVU"></h1>
             </div>
             <div data-role="content">
                 <div id="about_data">
-                    <h4 class="trans" data-label="How it works"></h4>
-                    <p><span class="trans" data-label="Uravu Messenger is a cross-platform mobile messaging app"></span> <span class="trans" data-label="which allows you to exchange messages without having to pay for SMS."></span> <span class="trans" data-label="Uravu Messenger is available for iPhone, BlackBerry, Android, Windows Phone and Nokia and yes,"></span> <span class="trans" data-label="those phones can all message each other! Because Uravu Messenger uses"></span> <span class="trans" data-label="the same internet data plan that you use for email and web browsing,"></span> <span class="trans" data-label="there is no cost to message and stay in touch with your friends."></span></p>
-                    <p><span class="trans" data-label="In addition to basic messaging Uravu users can create groups,"></span> <span class="trans" data-label="send each other unlimited images, video and audio media messages."></span></p>
+                    <h4 class="trans" data-label="HOW_IT_WORKS"></h4>
+                    <p class="trans" data-label="SHORT_DESCRIPTION"></p>
+                    <p class="trans" data-label="CREATE_GROUPS"></p>
                 </div>
             </div>
         </div>  <!-- about application -->
