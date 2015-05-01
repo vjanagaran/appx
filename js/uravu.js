@@ -633,7 +633,7 @@ function uploadAvatar(frm) {
     var img = $("#avatar-image").val();
     $("#done_msg").empty();
     if (img !== '') {
-        $("#done_msg").append(_t('PLEASE_WAITE'));
+        $("#done_msg").append(_t('PLEASE_WAIT'));
         var data = new FormData(frm);
         var uid = getVal(config.user_id),
                 err = "";
